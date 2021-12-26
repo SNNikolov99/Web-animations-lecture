@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animations tutorial</title>
+    <link rel="stylesheet" href="CSS/referat.css">
+    <script src="javaScript/referat.js" defer></script>
+</head>
+
+<body>
+    <aside>
+        <nav>
+            <ul class="nav_ul">
+                <li><a href="#introduction">Въведение</a></li>
+                <li><a href="#animation">Атрибути за анимиране</a>
+                    <ul>
+                        <li><a href="#example1">Пример 1</a></li>
+                        <li><a href="#example2">Пример 2</a></li>
+                        <li><a href="#example3">Пример 3</a></li>
+                        <li><a href="#example4">Пример 4</a></li>
+                        <li><a href="#example5">Пример 5</a></li>
+                    </ul>
+                </li>
+                <li><a href="#transition">Преходи</a></li>
+                <li><a href="#tips">Трикове и оптимизации</a>
+                    <ul>
+                        <li><a href="#CRP">Критичен път на изобразяване</a></li>
+                        <li><a href="#JS_vs_CSS">JavaScript срещу CSS</a></li>
+                        <li><a href="#transform_and_opacity">Transform и Opacity</a></li>
+                        <li><a href="#will_change">will-change атрибут</a></li>
+                    </ul>
+                </li>
+                <li><a href="#questions">Въпроси</a></li>
+                <li><a href="#sources">Източници</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main style="margin-left:18%">
+        <h1>Високопроизводителни анимации за уеб</h1>
+        <hr>
+        <h2 id="introduction">Въведение</h2>
+        <p>Съвременните браузъри изглеждат доста по-динамични в сравнение с тези от зората на интернета благодарение на високопроизводителните анимации. Те спомагат за по-жизнен дизайн на всяка интернет страница чрез технологии като HTML5, CSS3, както и
+            техни библиотеки. Тази страница ще Ви запознае с действието на основните атрибути, чрез които се създават анимациите, както и някои оптимизации и трикове, които се използват, за да се облекчи работата на компютърното устройство, докато е включен
+            браузъра (и въпреки тях Google Chrome пак е гладен за RAM).
+
+        </p>
+        <hr>
+        <h2 id="animation">Атрибути за анимиране</h2>
+        <p>
+            За да можем да моделираме високопроизводителни анимации в уеб се използват така наречените "CSS атрибути". Не можем да „задвижим“ дадена анимация без свойството <b>@keyframes</b> .В него определяме как ще се задвижва анимацията – постепенно(Фиг.1)
+            или постъпково(Фиг.2). За да употребим дадена анимацията е необходим обект, върху който да я приложим.
+        </p>
+        <container class="gifs">
+            <figure class="img">
+                <img src="images/from-to-animation.gif" alt="from-to-animation">
+                <figcaption>Фигура 1</figcaption>
+            </figure>
+            <figure class="img">
+                <img src="images/step-animation.gif" alt="step-by-step-animation">
+                <figcaption class=" text ">Фигура 2</figcaption>
+            </figure>
+        </container>
+        <p>
+            За да установим кой обект да се анимира от @keyframes можем да използваме атрибута <b>animation-name: </b>. Една анимация може да се използва от много обекти наведнъж. Всяка анимация си има контректно име, като не може да кръстим една и съща
+            анимация с две различни имена. Можем да контролираме продължителността на прехода в анимацията от едно състояние до друго чрез <b>animation-duration: </b> като стойностите обикновено се задават в секунди. Ако не сме споменали времетраенето
+            на преход, то анимация няма да се извърши, защото по подразбиране стойността на animation-duration е 0 секунди. С атрибутът <b>animation-iteration-count</b> определяме колко пъти да се повтори анимацията. Ако искаме тя да се повтаря постоянно,
+            задаваме стойност <i>infinite</i>, иначе се задава с някакво число.
+        </p>
+        <p>
+            Възможно е да управляваме посоката на анимацията. Например да напишем така, че да се движи отзад напред. Това се постига с атрибута <b>animation-direction</b> като стойностите му имат следния ефект:
+            <ul>
+                <li>normal - Стойността по подразбиране. Анимацията се изпълнява обичайно. </li>
+                <li>reverse - Анимацията се изпълнява отзад напред </li>
+                <li>alternate - Анимацията се изпълнява първо отзад напред, а после – отпред назад </li>
+                <li>alternate-reverse - Анимацията се изпълнява първо отпред назад,а после – обратно </li>
+            </ul>
+        </p>
+        <h3 id="example1">Пример 1</h3>
+        <p>Пример как се изпълняват различните посоки на анимация върху една и съща фигура за 6 секунди.</p>
+        <div class="example_Fig_1" id="example_Fig_11">normal</div>
+        <div class="example_Fig_1" id="example_Fig_12">reverse</div>
+        <div class="example_Fig_1" id="example_Fig_13">alternate</div>
+        <div class="example_Fig_1" id="example_Fig_14">alternate-reverse</div>
+        <button onclick="startExample1()">Старт на примера</button>
+        <p>
+            За да зададем начина, по който ще се движи анимацията използваме атрибута <b>animation-timing-function</b>, който определя с какъв темп тя ще се извършва. Следните стойности имат конкретните ефекти:
+            <ul>
+                <li>ease - стойност по подразбиране. Анимацията започва бавно, след това се забързва и пак се забавя накрая</li>
+                <li>linear- анимацията ще има същата скорост от начало до край</li>
+                <li>ease-out - анимацията се движи с една скорост докато не се забави накрая</li>
+                <li>ease-in - анимацията започва бавно и се движи еднакво бързо до края</li>
+                <li>ease-in-out - анимацията започва и завършва бавно</li>
+                <li>cubic bezier(n,n,n,n) - позволява да се определи собствен ход на анимацията</li>
+            </ul>
+        </p>
+        <h3 id="example2">Пример 2</h3>
+        <p>
+            Ето пример как се изпълняват следните степени на анимация върху една и съща фигура за 6 секунди.
+        </p>
+        <div class="example_Fig_1" id="example_Fig_22">ease</div>
+        <div class="example_Fig_1" id="example_Fig_21">linear</div>
+        <div class="example_Fig_1" id="example_Fig_24">ease-out</div>
+        <div class="example_Fig_1" id="example_Fig_23">ease-in</div>
+        <div class="example_Fig_1" id="example_Fig_25">ease-in-out</div>
+        <button onclick="startExample2()">Старт на примера</button>
+        <h3 id="example3">Пример3</h3>
+        <p>
+            Съществува опцията да променим кога да започне изпълнението на анимацията. По подразбиране всяка анимация стартира с отварянето на страницата. Промяната се извършва с атрибута <b>animation-delay:</b>, като той обикновено приема секунди като
+            стойности (възможни са и други мерни единици). Атрибутът може да приема и стойности на отрицателни числа. В такъв случай при зареждане на страницата анимацията ще започне така сякаш се е изпълнявала точно толкова време, колкото е зададено.
+            Например ако напишем
+            <b>animation-delay: -2s;</b> в някой елемент, който ще се анимира, то той ще започне сякаш се е изпълнявал 2 секунди повече. Долният пример показва как се извършва анимацията при положителна стойност на атрибута, а по-долният - при отрицателна.
+        </p>
+        <div class="example_Fig_1" id="example_Fig_31">delay:3s</div>
+        <div class="example_Fig_1" id="example_Fig_32">delay:-3s</div>
+        <button onclick="startExample3()">Старт на примера</button>
+        <p>
+            Всяка анимация по подразбиране връща анимирания елемент в своето начално състояние, но понякога не това е ефектът, който ще впечатли потребителя. За щастие можем да променим този факт с атрибута <b>animation-fill-mode:</b>.Той определя дали
+            да се наложи стилът от анимацията върху елемента и как да се наложи. Атрибутът има четири стойности:
+        </p>
+        <ul>
+            <li>none - стойност по подразбиране. Не налага никакви стилове върху него преди и след извършването на анимацията </li>
+            <li>forwards - елементът остава със стила от последния кадър на анимацията. </li>
+            <li>backwards - елементът остава със стила от първия кадър на анимацията (при изчакването animation-delay се задържат тези стойности)</li>
+            <li>both - едновременно са съчетани forwards и backwards </li>
+        </ul>
+        <h3 id="example4">Пример4</h3>
+        <p>Ето пример как работят стойностите върху едни и същи обект и анимация</p>
+        <div class="example_Fig_1" id="example_Fig_41">none</div>
+        <div class="example_Fig_1" id="example_Fig_44">forwards</div>
+        <div class="example_Fig_1" id="example_Fig_42"> backwards</div>
+        <div class="example_Fig_1" id="example_Fig_43">both</div>
+        <br>
+        <button onclick="startExample4()">Старт на примера</button>
+        <p>
+            В CSS има атрибут наречен <b>animation-play-state</b>, който дава възмжоността да паузираме и продължаваме анимации. Той има само 2 стойности <b>'paused'</b> и <b>'running'</b>. Логично, едната паузира анимацията, а другата я доизпълнява.
+            По-често се използва в javaScript, тъй като искаме да извършаме такъв тип манипулация по време на изпълнение. Там атрибутът е изменен до <b>animationPlayState</b>, но стойностите си остават същите.
+        </p>
+        <h3 id="example5">Пример5</h3>
+        <p>
+            Нека да съчетаем наученото. Долният пример показва анимация, получена чрез няколко атрибута, разгледани досега. Тя представлява фигура, която се мести поетапно в квадрат право и обратно на часовниковата стрелка и се изменя от квадрат в кръг. Вляво са
+            стойностите, а вдясно - фигурата.
+        </p>
+        <container class="demonstrateAnim">
+            <code class="code">
+
+                .exampleAnim {
+                    <br> width: 100px; 
+                    <br> height: 100px;
+                    <br> background-color: red;
+                    <br> position: relative;
+                    <br> animation: example 6s infinite ease-in alternate paused;
+                    <br> text-align: center;
+                    <br> will-change: width, height, border-radius;
+                    <br>}
+                    <br>
+                    @keyframes example {
+                        <br>   0% {
+                            background-color: red;
+                            transform: translate(0, 0);
+                        }
+                        <br>   25% {
+                            background-color: yellow;
+                            transform: translate(320%, 0%);
+                            <br>border-radius: 0 50% 0 0;
+                        }
+                        <br> 50% {
+                            background-color: blue;
+                            transform: translate(320%, 300%);
+                            <br>border-radius: 0 50% 50% 0;
+                        }
+                        <br> 75% {
+                            background-color: green;
+                            transform: translate(0%, 300%);
+                            <br>border-radius: 0 50% 50% 50%;
+                        }
+                        <br> 100% {
+                            background-color: red;
+                            transform: translate(0%, 0%);
+                            <br>border-radius: 50% 50% 50% 50%;
+                        } <br>
+                    } <br>
+
+                    <br>/*javaScript*/ 
+                    <br>const image = document.querySelector('.exampleAnim');
+                    <br>const running = image.style.animationPlayState === 'running';
+                    <br>image.style.animationPlayState = running ? 'paused' : 'running';
+
+            </code>
+            <div class="example5"></div>
+        </container>
+        <button onclick="startExample5()" id="example5_btn">Старт на примера</button>
+        <hr>
+        <h2 id="transition">Преходи</h2>
+        <p>
+            Чрез атрибутите за преходи в CSS можем плавно да изменим даден елемент, така че да постигнем желан ефект. Преходите се въвеждат със свойството <b>transition:</b>. За да създадем преход трябва да уточним две неща: –обект, върху който да се
+            извършва прехода; –времето на изпълнение. Ако времето на изпълнение е 0 секунди, то няма да има ефект върху обекта. Атрибутите върху преходите имат същите стойности и ефекти като някои от атрибутите на анимациите, най-вече атрибутите <b>transition-delay</b>            с animation-delay,
+            <b>transition-duration</b> с animation-duration и <b>transition-timing-function</b> c animation-timing-function. Последният атрибут <b>property</b> указва начина, по който да се извършва преходът. При поставяне на мишката върху долната фигура
+            можем да наблюдаваме 2-секунден период на преход на една фигура от квадрат в правоъгълник.
+        </p>
+        <div style="height:100px">
+            <div class="example_Fig" id="example_Fig_transition">Hover here</div>
+        </div>
+        <!--Трикове-->
+        <hr>
+        <h2 id="tips">Трикове и оптимизации</h2>
+        <p>
+            Първата стъпка към оптимизирането е да разберем как всъщност работи браузърът, когато изобразява анимациите. Противно на очакванията концепцията е направена проста и лесна за разбиране. Работейки, браузърът постоянно следва една абстракция, която се нарича
+            <b>критичен път на изобразяване</b>. Тя се състои от 4 части, които сега ще разгледаме.
+        </p>
+        <h3 id="CRP">Критичен път на изобразяване</h3>
+        <figure>
+            <img src="images/CRP.png " class="img_step" alt="critical rendering path">
+            <figcaption>
+                Първо браузърът прилага създадени стилове към елементите в страницата.
+            </figcaption>
+        </figure>
+
+        <figure>
+            <img src="images/CRP1.png " class="img_step" alt="styles">
+            <figcaption>
+                След това се създават формите на елементите и се определя местоположението им в страницата.
+            </figcaption>
+        </figure>
+
+        <figure>
+            <img src="images/CRP2.png " class="img_step" alt="layout">
+            <figcaption>
+                Следващата стъпка е попълването на всеки от тези елементи с цвят в слоеве. Често тук се използват свойства като box-shadow, border-radius и др.
+            </figcaption>
+        </figure>
+
+        <figure>
+            <img src="images/CRP3.png " class="img_step" alt="paint">
+            <figcaption>
+                В последната стъпка браузърът рисува всички елементи на екрана слой по слой, докато се получи завършената страница.
+            </figcaption>
+            <img src="images/CRP4.png " class="img_step" alt="composite">
+        </figure>
+        <h3 id="JS_vs_CSS">JavaScript срещу CSS</h3>
+        <p>
+            Друго което трябва да знаем преди да пишем код на страницата е коя технология да използваме, дали CSS или JavaScript. И двете имат предимства и недостатъци. При JavaScript неговото предимство е и неговият недостатък. Той позволява дадена анимация да бъде
+            манипулирана(спиране, задържане, начало, край и др.), тъй като кодът се изпълнява на главната нишка на браузъра. Проблемът е, че тази нишка вече е натоварена и ако използваме много анимации с JavaScript, то представянето на браузъра ще бъде
+            забавено. CSS е оптимизиран за всеки браузър, което е основното му предимство. За разлика от JavaScript обаче, нямаме такъв контрол над анимациите по време на изпълнение. Като цяло страницата би работила плавно, ако използваме JavaScript само
+            при нужда от манипулации на анимации по време на изпълнение(препоръчително на обекти създадени със CSS). В останалото време, CSS e по-удачен.
+        </p>
+        <p>
+            Ключово е да се стремим към постоянното поддържане на 60 кадъра в секунда. Причината за това е, че повечето екрани на съвременните устройства опресняват картината с честота 60Hz. Потребителят винаги ще иска неговите приложения да работят плавно (иначе
+            се сърди и ние като програмисти си губим работата). Нека развием пример , в който ще покажем как се подобрява производителността, като се използват някои оптимизационни техники.<br> Ще започнем с готов html код с няколко контейнера
+            (допускаме, че класовете са вече дефинирани в отделен CSS файл) и ще проследим прехода на оптимизация по правилния начин :
+        </p>
+        <section class="demonstrateAnim">
+            <code class="code">
+                &ltdiv class="layout "&gt 
+                <br> &nbsp&nbsp &ltdiv class="app-menu"&gt&nbsp&lt/div&gt 
+                <br> &nbsp&ltdiv class="header "&gt 
+                <br> &nbsp &nbsp &ltdiv class="menu-icon "&gt &lt/div &gt
+                <br> &nbsp&lt/div&gt 
+                <br> &lt/div> <br>
+            </code>
+            <figure class="img ">
+                <img src="images/app-menu.gif " alt="app-menu">
+                <figcaption>Фигура 3</figcaption>
+            </figure>
+        </section>
+        <p>
+            Сега ще изменим някои от стойностите на класовете.
+        </p>
+        <section class="demonstrateAnim">
+            <code class="code">
+                &ltstyle&gt 
+                <br> &nbsp &nbsp .app-menu { 
+                <br> &nbsp &nbsp left: -300px; 
+                <br> &nbsp &nbsp transition: left 300ms linear; 
+                <br> &nbsp &nbsp} 
+                <br>
+                <br> &nbsp &nbsp.app-menu-open .app-menu { 
+                <br> &nbsp &nbsp left: 0px; 
+                <br> &nbsp &nbsp transition: left 300ms linear; 
+                <br> &nbsp &nbsp} 
+                <br> &lt/style&gt
+            </code>
+            <figure class="img ">
+                <img src="images/slow-app-menu.gif " alt="slow-app-menu">
+                <figcaption>Фигура 4</figcaption>
+            </figure>
+        </section>
+        <p>
+            Във фигура 4 веднага се забелязва, че картината не работи плавно. Причината за това е в <b>transition</b> свойството и по-конкретно, че се използва с атрибути от тип left/top/right/bottom. Това предизвиква браузърът да създава слоеве на всеки
+            кадър като се отразява на всички наследствени обекти. Ето как изглежда представянето в браузъра като се използва инструментът на Google DevTools Timeline.
+        </p>
+        <div class="img ">
+            <img src="images/inefecient rendring.png " alt="inefecient rendering">
+            <figcaption>Фигура 5</о>
+        </div>
+
+        <p>
+            Забелязва се, че кадрите в секунда не са постоянни и са малко на брой.
+        </p>
+        <p>
+            „Зелената лента показва кадрите в секунда.Ако тя е нависоко, то анимацията се възпроизвежда с 60 кадъра в секунда.Ако се намира на ниско,то кадрите в секунда са по-малко. Червените ленти показват натоварване, затова се стремим да поддържаме зелените линии
+            високи и да елиминираме червените ленти, за да постигаме прогрес“
+        </p>
+        <h3 id="transform_and_opacity">Transform и Оpacity</h3>
+        <p>
+            <br> Един трик за оптимизация е възможно по-често да се използват в анимациите атрибутите <b>transform</b> и <b>opacity</b>, тъй като те извършват промяна само в четвъртата стъпка от критичният път.
+            <br> Нека заменим досегашните стойности на transition с transform в CSS кода.
+        </p>
+        <section class="demonstrateAnim">
+            <code class="code">
+                .app-menu { 
+                    <br> &nbsp&nbsp transform: translateX(-100%);
+                    <br> &nbsp&nbsp transition: transform 300ms linear;
+                    <br> }
+                <br> .app-menu-open .app-menu {
+                    <br> &nbsp&nbsp transform: none;
+                    <br> &nbsp&nbsp transition: transform 300ms linear;
+                    <br> }
+            </code>
+            <figure class="img">
+                <img src="images/smoother-app-menu.gif" alt="smoother-app-menu">
+                <figcaption>Фигура 6</figcaption>
+            </figure>
+        </section>
+        <figure class="img">
+            <figcaption>Отново се забелязва малка липса на плавност, но този път усилието на браузъра <br> е по-малко както се вижда на фигура 7 .</figcaption>
+            <img src="images/less ineficient rendering.png " alt="less inefecient rendering">
+            <figcaption>Фигура 7</figcaption>
+        </figure>
+        <h3 id="will_change">Will-change атрибут</h3>
+        <p>
+            Друг трик, който ще използваме в примера(и по принцип е хубаво нещо) е <b>will-change</b> атрибутът. Той предубеждава браузъра кои елементи ще бъдат променени в изпълнение като по този начин се увеличава производителността на конкректната
+            операция. Това, което всъщност прави атрибутът, е да премести изобразяването на елементите, които са на път да се покажат, от браузъра към графичния ускорител. Преди да продължим с примера, ще разясним накратко за <b>will-change</b>. Свойството
+            will-change има 4 стойности:
+            <br>
+            <ul>
+                <li>auto - прилагат се само стандартните оптимизации на съответния браузър</li>
+                <li>scroll-position - уведомява, че скоро позицията на елемента ще бъде променена</li>
+                <li>contents - стойностите на даден елемент, които се очаква да бъдат променени </li>
+                <li>custom-ident - всяко свойство, дефинирано от потребителя, към което ще се приложи will-change </li>
+            </ul>
+        </p>
+        <p>
+            Използването на will-change се препоръчва само в случаи, когато операцията, която ще се извърши е интензивна (анимациите са точно такива операции). Ако прекалено често се използва свойството в кода, съществува вероятност да се забави браузърът.
+
+        </p>
+        <p>Обратно към примера. Сега ще използваме will-change в кода и ще покажем неговото предимство</p>
+        <section class="demonstrateAnim">
+            <code class="code">
+                .app-menu { 
+                    <br> &nbsp &nbsp transform: translateX(-100%);
+                    <br> &nbsp &nbsp transition: transform 300ms linear;
+                    <br> &nbsp &nbsp will-change: transform;
+                    <br> }
+            </code>
+            <figure class="img ">
+                <img src="images/smooth-app-menu.gif " alt="smooth-app-menu">
+                <figcaption>Фигура 8</figcaption>
+            </figure>
+        </section>
+        <p>Във фигура 8 веднага се вижда колко по-бързо и плавно се плъзга менюто.<br> Ето и резултатите от DevTools във фигура 9 </p>
+        <figure>
+            <img src="images/eficient rendering.png " alt="efficient-rendering">
+            <figcaption>Фигура 9</figcaption>
+        </figure>
+        <p>Постоянни 60 кадъра в секунда и минимално натоварване</p>
+        <p>
+            Дали обаче е възможно да поддържаме постоянно 60 кадъра в секунда без никакво натоварване? Нека развием нашия пример още малко като този път внедрим javaScript в него. Ще въведем цялата логика за плъзгащото се меню на javaScript, като допълнително ще
+            променим html кода по следния начин:
+        </p>
+        <code class="code">
+            &ltdiv class = "code"&gt 
+            <br> &nbsp&nbsp &ltdiv class="menu "&gt
+            <br> &nbsp&nbsp &nbsp &ltdiv class="app-menu "&gt&lt/div&gt
+            <br> &nbsp&nbsp&lt/div&gt
+            <br>&lt/div&gt 
+            <br> &ltdiv class="layout "&gt
+            <br> &nbsp &ltdiv class="header "&gt
+            <br> &nbsp&nbsp &ltdiv class="menu-icon "&gt&lt/div&gt
+            <br> &nbsp &lt/div&gt
+            <br> &lt/div&gt
+        </code>
+        <p>
+            Вече имаме по-голям контрол над състоянието на менюто. Ще манипулираме чрез javaScript анимацията на клас, който се премахва, когато изтече времето за преход. Тук ще използваме <b>transitionend</b> събитието. Това е маркер, който събужда дадена
+            JavaScript функция след като се изпълни даден CSS преход. Кодът изглежда така:
+        </p>
+        <section class="demonstrateAnim">
+            <code class="code">
+                function toggleClassMenu() {
+                    <br> &nbsp&nbspmyMenu.classList.add("menu--animatable "); 
+                    <br> &nbsp&nbspif(!myMenu.classList.contains("menu--visible ")) { 
+                        <br>&nbsp&nbsp&nbsp&nbsp myMenu.classList.add("menu--visible ");
+                        <br> &nbsp&nbsp} else {
+                            <br>&nbsp&nbsp&nbsp&nbsp myMenu.classList.remove('menu--visible'); 
+                            <br>&nbsp&nbsp} 
+                        <br>}
+                <br> function OnTransitionEnd() {
+                    <br> &nbsp&nbsp myMenu.classList.remove("menu--animatable ");
+                    <br> }
+                <br> var myMenu = document.querySelector(".menu ");
+                <br> var oppMenu = document.querySelector(".menu-icon ");
+                <br> myMenu.addEventListener("transitionend", OnTransitionEnd, false);
+                <br> oppMenu.addEventListener("click ", toggleClassMenu, false);
+                <br> myMenu.addEventListener("click ", toggleClassMenu, false);
+            </code>
+            <figure class="img ">
+                <img src="images/smooth-app-menu.gif " alt="smooth-app-menu">
+                <figcaption>Фигура 10</figcaption>
+            </figure>
+        </section>
+        <p>
+            Ефектът на фигура 10 отново е гладък, въпреки че отнема малко повече време да се пресъздаде, но тук по-важно е константото представяне на браузъра.
+        </p>
+        <figure>
+            <img src="images/most-efficient-rendering.png " alt="most-efficient-rendering">
+            <figcaption>Фигура 11</figcaption>
+        </figure>
+        <p>Това е резултатът – максимално представяне и никакво натоварване. </p>
+        <hr>
+        <h2 id="questions">Въпроси</h2>
+        <a href="https://forms.gle/oQomBqSA7XAQQBSHA" target="_blanc">Въпросите след реферата може да отговорите тук</a>
+        <hr>
+        <footer>
+            <h2 id="sources">Източници</h2>
+            <p>
+                <br> https://www.html5rocks.com/en/tutorials/speed/high-performance-animations/ - публикувано на 7.11.2013 от Paul Lewis and Paul Irish
+                <br> https://www.w3schools.com/css/css3_transitions.asp
+                <br> https://medium.com/outsystems-experts/how-to-achieve-60-fps-animations-with-css3-db7b98610108 - публикувано на 12.8.2016 от Jose Rosario
+                <br> https://css-tricks.com/almanac/properties/w/will-change/ - публикувано от Robin Rendle на 5.3.2015
+                <br> https://www.w3schools.com/css/css3_animations.asp
+                <br> https://css-tricks.com/how-to-play-and-pause-css-animations-with-css-custom-properties/ - публикувано от Mads Stoumann на 21.01.2021
+            </p>
+        </footer>
+    </main>
+</body>
+
+</html>

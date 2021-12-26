@@ -1,0 +1,11 @@
+"http://www.html5rocks.com/en/tutorials/speed/high-performance-animations/
+https://www.html5rocks.com/en/tutorials/speed/layers/
+https://www.html5rocks.com/en/tutorials/speed/scrolling/
+https://blogs.igalia.com/itoral/2013/06/06/on-webkit-layers-and-accelerated-compositing/
+http://www.w3schools.com/css/css3_animations.asp
+[1] https://medium.com/outsystems-experts/how-to-achieve-60-fps-animations-with-css3-db7b98610108
+[2] https://www.html5rocks.com/en/tutorials/speed/layers/
+[3] https://blog.gyrosco.pe/smooth-css-animations-7d8ffc2c1d29
+[4] https://css-tricks.com/almanac/properties/w/will-change/
+[5] http://www.html5rocks.com/en/tutorials/speed/high-performance-animations/
+[6] https://www.html5rocks.com/en/tutorials/speed/scrolling/"
